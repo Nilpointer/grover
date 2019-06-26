@@ -109,6 +109,10 @@ class Grover
           browser = await puppeteer.launch(launchParams);
           const page = await browser.newPage();
 
+         if(options.viewport){
+           await page.setViewport(options.viewport);
+         }
+
           // Set caching flag (if provided)
           const cache = options.cache; delete options.cache;
           if (cache != undefined) {
@@ -148,7 +152,7 @@ class Grover
 
           // If we're running puppeteer in headless mode, return the converted PDF
           if (debug == undefined || (typeof debug === 'object' && (debug.headless == undefined || debug.headless))) {
-            return await page.pdf(options);
+            return await page.screenshot(options);
           }
         } finally {
           if (browser) {
@@ -193,6 +197,15 @@ class Grover
     normalized_options = Utils.normalize_object @options
     normalized_options['path'] = path if path.is_a? ::String
     result = processor.convert_pdf @url, normalized_options
+    return unless result
+
+    result['data'].pack('c*')
+  end
+
+  def to_png(path = nil)
+    normalized_options = Utils.normalize_object @options
+    normalized_options['path'] = path if path.is_a? ::String
+    result = processor.convert_png @url, normalized_options
     return unless result
 
     result['data'].pack('c*')
