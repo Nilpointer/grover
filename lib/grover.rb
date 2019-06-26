@@ -11,7 +11,7 @@ require 'grover/configuration'
 
 require 'nokogiri'
 require 'schmooze'
-
+require 'byebug'
 #
 # Grover interface for converting HTML to PDF
 #
@@ -152,10 +152,10 @@ class Grover
 
           // If we're running puppeteer in headless mode, return the converted PDF
           if (debug == undefined || (typeof debug === 'object' && (debug.headless == undefined || debug.headless))) {
-            if(options.fullPage)
+            if(options.fullpage)
              return await page.screenshot({fullPage:true});
             else
-             return await page.screenshot();
+             return await page.screenshot({fullPage:false});
           }
         } finally {
           if (browser) {
