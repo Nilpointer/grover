@@ -152,7 +152,10 @@ class Grover
 
           // If we're running puppeteer in headless mode, return the converted PDF
           if (debug == undefined || (typeof debug === 'object' && (debug.headless == undefined || debug.headless))) {
-            return await page.screenshot(options);
+            if(options.fullPage)
+             return await page.screenshot({fullPage:true});
+            else
+             return await page.screenshot();
           }
         } finally {
           if (browser) {
