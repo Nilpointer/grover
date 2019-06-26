@@ -91,6 +91,73 @@ class Grover
         }
       }
     FUNCTION
+
+    method :convert_png, Utils.strip_heredoc(<<-FUNCTION)
+      async (url_or_html, options) => {
+        let browser;
+        try {
+          let launchParams = #{launch_params};
+
+          // Configure puppeteer debugging options
+          const debug = options.debug; delete options.debug;
+          if (typeof debug === 'object' && !!debug) {
+            if (debug.headless != undefined) { launchParams.headless = debug.headless; }
+            if (debug.devtools != undefined) { launchParams.devtools = debug.devtools; }
+          }
+
+          // Launch the browser and create a page
+          browser = await puppeteer.launch(launchParams);
+          const page = await browser.newPage();
+
+          // Set caching flag (if provided)
+          const cache = options.cache; delete options.cache;
+          if (cache != undefined) {
+            await page.setCacheEnabled(cache);
+          }
+
+          // Setup timeout option (if provided)
+          let request_options = {};
+          const timeout = options.timeout; delete options.timeout;
+          if (timeout != undefined) {
+            request_options.timeout = timeout;
+          }
+
+          if (url_or_html.match(/^http/i)) {
+            // Request is for a URL, so request it
+            request_options.waitUntil = 'networkidle2';
+            await page.goto(url_or_html, request_options);
+          } else {
+            // Request is some HTML content. Use request interception to assign the body
+            request_options.waitUntil = 'networkidle0';
+            await page.setRequestInterception(true);
+            page.once('request', request => {
+              request.respond({ body: url_or_html });
+              // Reset the request interception
+              // (we only want to intercept the first request - ie our HTML)
+              page.on('request', request => request.continue());
+            });
+            const displayUrl = options.displayUrl; delete options.displayUrl;
+            await page.goto(displayUrl || 'http://example.com', request_options);
+          }
+
+          // If specified, emulate the media type
+          const emulateMedia = options.emulateMedia; delete options.emulateMedia;
+          if (emulateMedia != undefined) {
+            await page.emulateMedia(emulateMedia);
+          }
+
+          // If we're running puppeteer in headless mode, return the converted PDF
+          if (debug == undefined || (typeof debug === 'object' && (debug.headless == undefined || debug.headless))) {
+            return await page.pdf(options);
+          }
+        } finally {
+          if (browser) {
+            await browser.close();
+          }
+        }
+      }
+    FUNCTION
+
   end
   private_constant :Processor
 
