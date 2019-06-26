@@ -6,6 +6,4 @@ require 'grover'
 
 require 'irb'
 
-opts = {viewport:{ width: 794, height: 1123 }}
-url = 'http://www.formware.de'
 IRB.start
