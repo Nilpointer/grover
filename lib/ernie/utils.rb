@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class Grover
+class Ernie
   #
-  # Utility class for Grover helper methods
+  # Utility class for Ernie helper methods
   #
   class Utils
     ACRONYMS = {

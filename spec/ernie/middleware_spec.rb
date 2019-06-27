@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Grover::Middleware do
+describe Ernie::Middleware do
   # rubocop:disable RSpec/MultipleExpectations
 
   subject(:mock_app) do
@@ -29,7 +29,7 @@ describe Grover::Middleware do
       'Cache-Control' => 'max-age=2592000, public'
     }
   end
-  let(:response) { ['Grover McGroveryface'] }
+  let(:response) { ['Ernie McGroveryface'] }
 
   describe '#call' do
     describe 'response content type' do
@@ -37,7 +37,7 @@ describe Grover::Middleware do
         it 'returns PDF content type' do
           get 'http://www.example.org/test.pdf'
           expect(last_response.headers['Content-Type']).to eq 'application/pdf'
-          response_size = Grover.new('Grover McGroveryface').to_pdf.bytesize
+          response_size = Ernie.new('Ernie McGroveryface').to_pdf.bytesize
           expect(last_response.body.bytesize).to eq response_size
           expect(last_response.headers['Content-Length']).to eq response_size.to_s
         end
@@ -45,7 +45,7 @@ describe Grover::Middleware do
         it 'matches PDF case insensitive' do
           get 'http://www.example.org/test.PDF'
           expect(last_response.headers['Content-Type']).to eq 'application/pdf'
-          response_size = Grover.new('Grover McGroveryface').to_pdf.bytesize
+          response_size = Ernie.new('Ernie McGroveryface').to_pdf.bytesize
           expect(last_response.body.bytesize).to eq response_size
           expect(last_response.headers['Content-Length']).to eq response_size.to_s
         end
@@ -55,7 +55,7 @@ describe Grover::Middleware do
         it 'returns the downstream content type' do
           get 'http://www.example.org/test'
           expect(last_response.headers['Content-Type']).to eq 'text/html'
-          expect(last_response.body).to eq 'Grover McGroveryface'
+          expect(last_response.body).to eq 'Ernie McGroveryface'
           expect(last_response.headers['Content-Length']).to eq '20'
         end
       end
@@ -64,7 +64,7 @@ describe Grover::Middleware do
         it 'returns the downstream content type' do
           get 'http://www.example.org/test.html'
           expect(last_response.headers['Content-Type']).to eq 'text/html'
-          expect(last_response.body).to eq 'Grover McGroveryface'
+          expect(last_response.body).to eq 'Ernie McGroveryface'
           expect(last_response.headers['Content-Length']).to eq '20'
         end
       end
@@ -77,7 +77,7 @@ describe Grover::Middleware do
           get 'http://www.example.org/test.pdf'
           expect(@env['PATH_INFO']).to eq '/test'
           expect(@env['REQUEST_URI']).to eq '/test'
-          expect(@env['Rack-Middleware-Grover']).to eq 'true'
+          expect(@env['Rack-Middleware-Ernie']).to eq 'true'
         end
       end
 
@@ -86,7 +86,7 @@ describe Grover::Middleware do
           get 'http://www.example.org/test.html'
           expect(@env['PATH_INFO']).to eq '/test.html'
           expect(@env['REQUEST_URI']).to be_nil
-          expect(@env['Rack-Middleware-Grover']).to be_nil
+          expect(@env['Rack-Middleware-Ernie']).to be_nil
         end
       end
       # rubocop:enable RSpec/InstanceVariable
@@ -117,7 +117,7 @@ describe Grover::Middleware do
         it 'returns response as PDF' do
           get 'http://www.example.org/test.pdf'
           expect(last_response.headers['Content-Type']).to eq 'application/pdf'
-          expect(last_response.body.bytesize).to eq Grover.new('Rackalicious').to_pdf.bytesize
+          expect(last_response.body.bytesize).to eq Ernie.new('Rackalicious').to_pdf.bytesize
         end
       end
 
@@ -127,30 +127,30 @@ describe Grover::Middleware do
         it 'returns response as PDF' do
           get 'http://www.example.org/test.pdf'
           expect(last_response.headers['Content-Type']).to eq 'application/pdf'
-          expect(last_response.body.bytesize).to eq Grover.new('Part 1Part 2').to_pdf.bytesize
+          expect(last_response.body.bytesize).to eq Ernie.new('Part 1Part 2').to_pdf.bytesize
         end
       end
     end
 
     describe 'preprocessor' do
       it 'calls to the HTML preprocessor with the original HTML' do
-        expect(Grover::HTMLPreprocessor).to(
+        expect(Ernie::HTMLPreprocessor).to(
           receive(:process).
-            with('Grover McGroveryface', 'http://www.example.org/', 'http').
+            with('Ernie McGroveryface', 'http://www.example.org/', 'http').
             and_return('Processed McProcessyface')
         )
         get 'http://www.example.org/test.pdf'
-        expect(last_response.body.bytesize).to eq Grover.new('Processed McProcessyface').to_pdf.bytesize
+        expect(last_response.body.bytesize).to eq Ernie.new('Processed McProcessyface').to_pdf.bytesize
       end
     end
 
     describe 'pdf conversion' do
-      let(:grover) { instance_double Grover, show_front_cover?: false, show_back_cover?: false }
+      let(:ernie) { instance_double Ernie, show_front_cover?: false, show_back_cover?: false }
 
-      it 'passes through the request URL (sans extension) to Grover' do
-        expect(Grover).to(
+      it 'passes through the request URL (sans extension) to Ernie' do
+        expect(Ernie).to(
           receive(:new).
-            with('Grover McGroveryface', display_url: 'http://www.example.org/test').
+            with('Ernie McGroveryface', display_url: 'http://www.example.org/test').
             and_return(grover)
         )
         expect(grover).to receive(:to_pdf).with(no_args).and_return 'A converted PDF'
@@ -172,7 +172,7 @@ describe Grover::Middleware do
               if env['PATH_INFO'] == '/front/page/meta'
                 "This is the cover page with params #{env['QUERY_STRING']}"
               else
-                Grover::Utils.squish(<<-HTML)
+                Ernie::Utils.squish(<<-HTML)
                   <html>
                     <head>
                       <title>Paaage</title>
@@ -191,11 +191,11 @@ describe Grover::Middleware do
 
         it { expect(pdf_reader.page_count).to eq 2 }
         it do
-          expect(Grover::Utils.squish(pdf_reader.pages[0].text)).to(
+          expect(Ernie::Utils.squish(pdf_reader.pages[0].text)).to(
             eq('This is the cover page with params queryparam=baz')
           )
         end
-        it { expect(Grover::Utils.squish(pdf_reader.pages[1].text)).to eq 'Hey there' }
+        it { expect(Ernie::Utils.squish(pdf_reader.pages[1].text)).to eq 'Hey there' }
       end
 
       context 'when the downstream response includes back cover page configuration' do
@@ -205,7 +205,7 @@ describe Grover::Middleware do
               if env['PATH_INFO'] == '/back/page/meta'
                 "This is the back page with params #{env['QUERY_STRING']}"
               else
-                Grover::Utils.squish(<<-HTML)
+                Ernie::Utils.squish(<<-HTML)
                   <html>
                     <head>
                       <title>Paaage</title>
@@ -223,9 +223,9 @@ describe Grover::Middleware do
         end
 
         it { expect(pdf_reader.page_count).to eq 2 }
-        it { expect(Grover::Utils.squish(pdf_reader.pages[0].text)).to eq 'Hey there' }
+        it { expect(Ernie::Utils.squish(pdf_reader.pages[0].text)).to eq 'Hey there' }
         it do
-          expect(Grover::Utils.squish(pdf_reader.pages[1].text)).to(
+          expect(Ernie::Utils.squish(pdf_reader.pages[1].text)).to(
             eq('This is the back page with params anotherquery=foo')
           )
         end
@@ -286,7 +286,7 @@ describe Grover::Middleware do
       def check_pdf(contents:)
         pdf_reader = pdf_reader_from_response
         expect(pdf_reader.page_count).to eq 1
-        expect(Grover::Utils.squish(pdf_reader.pages.first.text)).to eq contents
+        expect(Ernie::Utils.squish(pdf_reader.pages.first.text)).to eq contents
       end
 
       def pdf_reader_from_response

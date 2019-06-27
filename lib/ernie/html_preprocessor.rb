@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Grover
+class Ernie
   #
   # Helper module for preparing HTML for conversion
   #

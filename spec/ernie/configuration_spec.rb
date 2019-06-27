@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Grover::Configuration do
+describe Ernie::Configuration do
   subject(:configuration) { described_class.new }
 
   it 'sets default for options' do

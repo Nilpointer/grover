@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-require 'grover/version'
+require 'ernie/version'
 
-require 'grover/utils'
+require 'ernie/utils'
 require 'active_support_ext/object/deep_dup'
 
-require 'grover/html_preprocessor'
-require 'grover/middleware'
-require 'grover/configuration'
+require 'ernie/html_preprocessor'
+require 'ernie/middleware'
+require 'ernie/configuration'
 
 require 'nokogiri'
 require 'schmooze'
-require 'byebug'
+
 #
-# Grover interface for converting HTML to PDF
+# Ernie interface for converting HTML to PDF
 #
-class Grover
+class Ernie
   #
   # Processor helper class for calling out to Puppeteer NodeJS library
   #
@@ -266,7 +266,7 @@ class Grover
   end
 
   def combine_options(options)
-    combined = Utils.deep_stringify_keys Grover.configuration.options
+    combined = Utils.deep_stringify_keys Ernie.configuration.options
     Utils.deep_merge! combined, Utils.deep_stringify_keys(options)
     Utils.deep_merge! combined, meta_options unless url_source?
 
@@ -283,7 +283,7 @@ class Grover
     meta_opts = {}
 
     meta_tags.each do |meta|
-      tag_name = meta['name'] && meta['name'][/#{Grover.configuration.meta_tag_prefix}([a-z_-]+)/, 1]
+      tag_name = meta['name'] && meta['name'][/#{Ernie.configuration.meta_tag_prefix}([a-z_-]+)/, 1]
       next unless tag_name
 
       Utils.deep_assign meta_opts, tag_name.split('-'), meta['content']

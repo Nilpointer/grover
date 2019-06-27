@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class Grover
+class Ernie
   #
-  # Configuration of the options for Grover HTML to PDF conversion
+  # Configuration of the options for Ernie HTML to PDF conversion
   #
   class Configuration
     attr_accessor :options, :meta_tag_prefix

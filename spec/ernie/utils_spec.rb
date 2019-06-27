@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Grover::Utils do
+describe Ernie::Utils do
   describe '.squish' do
     subject(:squish) { described_class.squish string }
 

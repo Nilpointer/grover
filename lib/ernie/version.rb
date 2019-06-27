@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class Grover
-  VERSION = '0.7.7'
+class Ernie
+  VERSION = '0.8.0'
 end

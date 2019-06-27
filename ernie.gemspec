@@ -3,16 +3,16 @@
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'grover/version'
+require 'ernie/version'
 
 Gem::Specification.new do |spec|
-  spec.name        = 'grover'
-  spec.version     = Grover::VERSION
-  spec.authors     = ['Andrew Bromwich']
+  spec.name        = 'ernie'
+  spec.version     = Ernie::VERSION
+  spec.authors     = ['Andrew Bromwich', 'Andreas Ulrich']
   spec.email       = %w[abromwich@studiosity.com]
-  spec.description = 'Transform HTML into PDFs using Google Puppeteer/Chromium'
-  spec.summary     = 'A Ruby gem to transform HTML into PDFs wrapper the NodeJS Google Puppeteer driver for Chromium'
-  spec.homepage    = 'http://github.com/Studiosity/grover'
+  spec.description = 'Transform HTML into PDFs and PNGs using Google Puppeteer/Chromium based on Grover by Andrew Bromwich http://github.com/Studiosity/grover'
+  spec.summary     = 'A Ruby gem to transform HTML into PDFs and PNGs wrapper the NodeJS Google Puppeteer driver for Chromium'
+  spec.homepage    = 'https://github.com/Nilpointer/ernie'
   spec.license     = 'MIT'
 
   spec.files         = `git ls-files lib`.split("\n")

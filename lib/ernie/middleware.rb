@@ -2,7 +2,7 @@
 
 require 'combine_pdf'
 
-class Grover
+class Ernie
   #
   # Rack middleware for catching PDF requests and returning the upstream HTML as a PDF
   #
@@ -61,7 +61,7 @@ class Grover
       body = body.join if body.is_a?(Array)
 
       body = HTMLPreprocessor.process body, root_url, protocol
-      Grover.new(body, display_url: request_url)
+      Ernie.new(body, display_url: request_url)
     end
 
     def add_cover_content(grover)
@@ -92,7 +92,7 @@ class Grover
     def configure_env_for_pdf_request(env)
       env['PATH_INFO'] = env['REQUEST_URI'] = path_without_extension
       env['HTTP_ACCEPT'] = concat(env['HTTP_ACCEPT'], Rack::Mime.mime_type('.html'))
-      env['Rack-Middleware-Grover'] = 'true'
+      env['Rack-Middleware-Ernie'] = 'true'
     end
 
     def concat(accepts, type)
