@@ -110,7 +110,9 @@ describe Ernie do
           HTML
         end
 
-        it { expect(pdf_reader.pages.first.attributes).to include(MediaBox: [0, 0, 841.91998, 1188]) }
+        it {
+          expect(pdf_reader.pages.first.attributes).to include(MediaBox: [0, 0, 841.91998, 1189.91992])
+        }
       end
 
       context 'when the page contains meta options with escaped content' do
@@ -273,12 +275,16 @@ describe Ernie do
         HTML
       end
 
-      it { expect(pdf_text_content).to eq 'Hey there' }
+      it {
+        expect(pdf_text_content).to eq 'Hey there'
+      }
 
       context 'with emulate_media set to `screen`' do
         before { allow(described_class.configuration).to receive(:options).and_return(emulate_media: 'screen') }
 
-        it { expect(pdf_text_content).to eq 'Hey there This should only display for screen media' }
+        it {
+          expect(pdf_text_content).to eq 'This should only display for screen media'
+        }
       end
     end
   end

@@ -57,7 +57,7 @@ describe Ernie do
 
       it { is_expected.to start_with "%PDF-1.4\n" }
       it { expect(pdf_reader.page_count).to eq 1 }
-      it { expect(pdf_text_content).to include "I'm Feeling Lucky" }
+      it { expect(pdf_text_content).to include "Auf gut Glück!" }
     end
 
     context 'when passing through an invalid URL' do

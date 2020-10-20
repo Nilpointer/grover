@@ -56,7 +56,7 @@ describe Ernie::Middleware do
           get 'http://www.example.org/test'
           expect(last_response.headers['Content-Type']).to eq 'text/html'
           expect(last_response.body).to eq 'Ernie McGroveryface'
-          expect(last_response.headers['Content-Length']).to eq '20'
+          expect(last_response.headers['Content-Length']).to eq '19'
         end
       end
 
@@ -65,7 +65,7 @@ describe Ernie::Middleware do
           get 'http://www.example.org/test.html'
           expect(last_response.headers['Content-Type']).to eq 'text/html'
           expect(last_response.body).to eq 'Ernie McGroveryface'
-          expect(last_response.headers['Content-Length']).to eq '20'
+          expect(last_response.headers['Content-Length']).to eq '19'
         end
       end
     end
@@ -151,9 +151,9 @@ describe Ernie::Middleware do
         expect(Ernie).to(
           receive(:new).
             with('Ernie McGroveryface', display_url: 'http://www.example.org/test').
-            and_return(grover)
+            and_return(ernie)
         )
-        expect(grover).to receive(:to_pdf).with(no_args).and_return 'A converted PDF'
+        expect(ernie).to receive(:to_pdf).with(no_args).and_return 'A converted PDF'
         get 'http://www.example.org/test.pdf'
         expect(last_response.body).to eq 'A converted PDF'
       end
