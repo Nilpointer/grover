@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^spec/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'combine_pdf', '~> 1.0', '>= 1.0.18'
+  spec.add_dependency 'combine_pdf', '~> 1.0', '~> 0.2.5'
   spec.add_dependency 'nokogiri', '~> 1.10', '>= 1.10.10'
   spec.add_dependency 'schmooze', '~> 0.2.0'
 
